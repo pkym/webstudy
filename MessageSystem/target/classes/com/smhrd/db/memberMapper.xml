@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 스키마부터 설정하기 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 1) mapper 태그 안쪽에 SQL 쿼리문들을 작성 -->
+  <!-- namespace : 식별자(mapper 파일이 여러개였을 때 중복되지 않게만 작성) -->
+  <mapper namespace="com.smhrd.model.memberDAO">
+ 
+  <insert id="join" parameterType="com.smhrd.model.memberDTO">
+<!-- 세미콜론 금지 -->
+  	insert into web_member
+  	values(#{email},#{pw},#{tel},#{address})
+<!-- #{} getter 메소드 쓰겠다 >> 따라서 memberDTO에 getter 메소드 써야함 -->  
+  </insert>
+<!-- id: 쿼리문을 구분할 수 있는 식별자(메소드명과 동일하게 사용) -->
+<!-- parameterType : DAO에서부터 받아오는 매개변수의 자료형 지정
+					(풀네임을 작성해야함 >> package명까지) -->  
+<!-- resultType : sql 구문을 실행하고 나서 결과값을 java 내부에서 어떤 자료형으로 받아올건지 지정하는 타입
+(풀네임 작성해야함) **select 구문 작성시 꼭 써주기(insert undate delete는 필요 X)
+mybatis 가 기본생성자 생성한 후 setDTO 가져옴 -->
+  <select id="login" 
+  resultType="com.smhrd.model.memberDTO"  
+  parameterType="com.smhrd.model.memberDTO">
+  	select * from web_member where email=#{email} and pw=#{pw}
+  </select>
+  
+  <update id="update" parameterType="com.smhrd.model.memberDTO">
+  	update web_member set pw=#{pw}, tel=#{tel}, address=#{address} where email=#{email}
+  </update>
+  
+  <select id="select" resultType="com.smhrd.model.memberDTO">
+    select * from web_member where email != 'admin'
+  </select> 
+  
+</mapper>
